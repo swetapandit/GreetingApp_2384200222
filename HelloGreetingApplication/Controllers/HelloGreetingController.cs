@@ -51,13 +51,33 @@ namespace HelloGreetingApplication.Controllers
             }
         }
 
+        /// <summary>
+        /// Get Greeting Message (Hello World)
+        /// </summary>
         [HttpGet]
         [Route("getMsg")]
         public string GetMsg1()
         {
-            return greetingBL.GetMsg();
+            logger.Info("GET request received at /getMsg");
+            string message = greetingBL.GetMsg();
+            logger.Info($"Response: {message}");
+            return message;
         }
 
+        /// <summary>
+        /// Post Greeting Message based on First Name and/or Last Name
+        /// </summary>
+        [HttpPost]
+        [Route("postMsgByName")]
+        public string PostMsgByName([FromBody] UserNameRequestModel userNameRequestModel)
+        {
+            logger.Info($"POST request received at /postMsgByName with Data: FirstName={userNameRequestModel.FirstName}, LastName={userNameRequestModel.LastName}");
+
+            string message = greetingBL.GetGreetingMessage(userNameRequestModel);
+
+            logger.Info($"Response: {message}");
+            return message;
+        }
         /// <summary>
         /// Post Method to post the Greeting Message
         /// </summary>
