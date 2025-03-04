@@ -1,4 +1,6 @@
 ﻿using System;
+using BusinessLayer.Interface;
+using BusinessLayer.Service;
 using Microsoft.EntityFrameworkCore;
 using ModelLayer.Model;
 using NLog;
@@ -19,6 +21,7 @@ try
     builder.Services.AddControllers();
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
+    builder.Services.AddScoped<IGreetingBL, GreetingBL>();
 
     // Ensure the connection string is available
 

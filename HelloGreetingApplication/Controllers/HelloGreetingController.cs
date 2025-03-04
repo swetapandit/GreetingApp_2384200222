@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessLayer.Interface;
+using Microsoft.AspNetCore.Mvc;
 using ModelLayer.Model;
 using NLog;
 using RepositoryLayer.Entity;
+using RepositoryLayer.Interface;
+using RepositoryLayer.Service;
 
 namespace HelloGreetingApplication.Controllers
 {
@@ -9,7 +12,14 @@ namespace HelloGreetingApplication.Controllers
     [Route("[controller]")]
     public class HelloGreetingController : ControllerBase
     {
+        private readonly IGreetingBL greetingBL;
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
+
+
+        public HelloGreetingController(IGreetingBL _greetingBL)
+        {
+            greetingBL = _greetingBL;
+        }
 
         /// <summary>
         /// Get Method to get the Greeting Message
@@ -41,6 +51,13 @@ namespace HelloGreetingApplication.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("getMsg")]
+        public string GetMsg1()
+        {
+            return greetingBL.GetMsg();
+        }
+
         /// <summary>
         /// Post Method to post the Greeting Message
         /// </summary>
@@ -70,6 +87,7 @@ namespace HelloGreetingApplication.Controllers
                 return StatusCode(500, "Internal server error");
             }
         }
+
 
         [HttpPut]
         public IActionResult Put(RequestModel requestModel)
