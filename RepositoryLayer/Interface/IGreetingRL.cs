@@ -7,6 +7,7 @@ namespace RepositoryLayer.Interface
 	public interface IGreetingRL
 	{
         GreetingEntity PostGreeting(RequestGreetingModel requestGreetingModel);
+        GreetingEntity GetGreetingById(int id);
     }
 }
 

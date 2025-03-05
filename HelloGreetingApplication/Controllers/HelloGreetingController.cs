@@ -1,5 +1,7 @@
 ﻿using BusinessLayer.Interface;
+using BusinessLayer.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using ModelLayer.Model;
 using NLog;
 using RepositoryLayer.Entity;
@@ -29,30 +31,38 @@ namespace HelloGreetingApplication.Controllers
         /// </summary>
         /// <param name="responseModel"></param>
         /// <returns> response model </returns>
-        [HttpGet]
-        public IActionResult Get()
+        ///
+
+        [HttpGet("{id}")]
+        public IActionResult GetGreetingById(int id)
         {
             try
             {
-                logger.Info("GET request received at HelloGreetingController");
+                logger.Info($"GET request received to find greeting with ID={id}");
+                var greeting = greetingBL.GetGreetingById(id);
 
-                ResponseModel<string> responseModel = new ResponseModel<string>
+                if (greeting == null)
                 {
-                    StatusCode = 200,
-                    Sucess = true,
-                    Message = "Hello to Greeting App",
-                    Data = "Hello World!"
-                };
+                    response.Sucess = false;
+                    response.Message = "Greeting not found!";
+                    response.Data = null;
+                    logger.Info("Find Greeting by ID failed.");
+                    return NotFound(response);
+                }
 
-                logger.Info("GET request processed successfully.");
-                return Ok(responseModel);
+                response.Sucess = true;
+                response.Message = "Greeting found successfully.";
+                response.Data = greeting.Message;
+                logger.Info("Find Greeting by ID succeeded.");
+                return Ok(response);
             }
             catch (Exception ex)
             {
-                logger.Error(ex, "Error occurred while processing GET request.");
+                logger.Error(ex, "Error occurred while fetching greeting by ID.");
                 return StatusCode(500, "Internal server error");
             }
         }
+
 
         /// <summary>
         /// Get Greeting Message (Hello World)
@@ -86,6 +96,8 @@ namespace HelloGreetingApplication.Controllers
         /// </summary>
         /// <param name="requestModel"></param>
         /// <returns> response model </returns>
+        ///
+
         [HttpPost]
         public IActionResult Post(RequestGreetingModel requestGreetingModel)
         {

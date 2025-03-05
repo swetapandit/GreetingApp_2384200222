@@ -1,5 +1,6 @@
 ﻿using System;
 using ModelLayer.Model;
+using RepositoryLayer.Entity;
 
 namespace BusinessLayer.Interface
 {
@@ -7,7 +8,7 @@ namespace BusinessLayer.Interface
 	{
 		string GetMsg();
 		string GetGreetingMessage(UserNameRequestModel request);
-		PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel);
+        GreetingEntity GetGreetingById(int id);
+        PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel);
     }
 }
-

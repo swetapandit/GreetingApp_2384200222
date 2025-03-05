@@ -1,6 +1,8 @@
 ﻿using System;
 using BusinessLayer.Interface;
+using Microsoft.EntityFrameworkCore;
 using ModelLayer.Model;
+using RepositoryLayer.Entity;
 using RepositoryLayer.Interface;
 
 namespace BusinessLayer.Service
@@ -9,10 +11,12 @@ namespace BusinessLayer.Service
 	{
         private readonly IGreetingRL greetingRL;
         private PostGreetingResponse _postGreetingResponse;
+        private readonly HelloGreetingContext helloGreetingContext;
 
-        public GreetingBL(IGreetingRL _greetingRL)
+        public GreetingBL(IGreetingRL _greetingRL, HelloGreetingContext _helloGreetingContext)
         {
             greetingRL = _greetingRL;
+            helloGreetingContext = _helloGreetingContext;
         }
 
         public PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel)
@@ -24,6 +28,11 @@ namespace BusinessLayer.Service
             _postGreetingResponse.Id = result.Id;
             _postGreetingResponse.Message = result.Message;
             return _postGreetingResponse;
+        }
+
+        public GreetingEntity GetGreetingById(int id)
+        {
+            return greetingRL.GetGreetingById(id);
         }
 
         public string GetMsg()
