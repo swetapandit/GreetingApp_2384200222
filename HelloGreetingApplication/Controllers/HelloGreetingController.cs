@@ -76,10 +76,30 @@ namespace HelloGreetingApplication.Controllers
             logger.Info($"Response: {message}");
             return message;
         }
+        /// <summary>
+        /// Get All Greeting Message 
+        /// </summary>
+        ///
 
+
+        [HttpGet("all")]
+        public IActionResult GetAllGreetings()
+        {
+            var greetings = greetingBL.GetAllGreetings();
+            if (greetings == null || greetings.Count == 0)
+            {
+                logger.Info("No greetings found.");
+                return NotFound(new { Success = false, Message = "No greetings found." });
+            }
+
+            logger.Info("All greetings retrieved successfully.");
+            return Ok(new { Success = true, Data = greetings });
+        }
         /// <summary>
         /// Post Greeting Message based on First Name and/or Last Name
         /// </summary>
+        ///
+
         [HttpPost]
         [Route("postMsgByName")]
         public string PostMsgByName([FromBody] UserNameRequestModel userNameRequestModel)

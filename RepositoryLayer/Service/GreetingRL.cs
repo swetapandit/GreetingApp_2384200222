@@ -29,6 +29,13 @@ namespace RepositoryLayer.Service
             dbContext.SaveChanges();
             return newGreeting;
         }
+
+
+        public List<GreetingEntity> GettAllGreetings()
+        {
+            return dbContext.Greetings.ToList();
+        }
+
         public GreetingEntity GetGreetingById(int id)
         {
             return dbContext.Greetings.FirstOrDefault(g => g.Id == id);

@@ -9,6 +9,7 @@ namespace BusinessLayer.Interface
 		string GetMsg();
 		string GetGreetingMessage(UserNameRequestModel request);
         GreetingEntity GetGreetingById(int id);
+        List<GreetingEntity> GetAllGreetings();
         PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel);
     }
 }
