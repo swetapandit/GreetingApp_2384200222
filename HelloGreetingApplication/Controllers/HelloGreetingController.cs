@@ -13,6 +13,9 @@ namespace HelloGreetingApplication.Controllers
     public class HelloGreetingController : ControllerBase
     {
         private readonly IGreetingBL greetingBL;
+
+        ResponseModel<string> response = new ResponseModel<String>();
+
         private static readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
@@ -84,22 +87,31 @@ namespace HelloGreetingApplication.Controllers
         /// <param name="requestModel"></param>
         /// <returns> response model </returns>
         [HttpPost]
-        public IActionResult Post(RequestModel requestModel)
+        public IActionResult Post(RequestGreetingModel requestGreetingModel)
         {
             try
             {
-                logger.Info($"POST request received: Key={requestModel.Id}, Value={requestModel.Message}");
+                logger.Info($"POST request received: Value={requestGreetingModel.Message}");
 
-                ResponseModel<string> responseModel = new ResponseModel<string>
-                {
-                    StatusCode = 200,
-                    Sucess = true,
-                    Message="Hello to Greeting App from Post Method",
-                    Data = $"Key : {requestModel.Id}, Value: {requestModel.Message}"
-                };
+                //ResponseModel<string> responseModel = new ResponseModel<string>
+                //{
+                //    StatusCode = 200,
+                //    Sucess = true,
+                //    Message="Hello to Greeting App from Post Method",
+                //    Data = $"Key : {requestModel.Id}, Value: {requestModel.Message}"
+                //};
+                //return Ok(responseModel);
 
                 logger.Info("POST request processed successfully.");
-                return Ok(responseModel);
+                var result = greetingBL.registerBL(requestGreetingModel);
+                response = new ResponseModel<String>();
+                response.StatusCode = 201;
+                response.Sucess = true;
+                response.Message = "Data Sucessfully Saved";
+                response.Data = result.Message;
+                return Created("user created", result);
+
+
             }
             catch (Exception ex)
             {
@@ -110,18 +122,18 @@ namespace HelloGreetingApplication.Controllers
 
 
         [HttpPut]
-        public IActionResult Put(RequestModel requestModel)
+        public IActionResult Put(RequestGreetingModel requestGreetingModel)
         {
             try
             {
-                logger.Info($"PUT request received: Key={requestModel.Id}, Value={requestModel.Message}");
+                logger.Info($"PUT request received:Value={requestGreetingModel.Message}");
 
                 ResponseModel<string> responseModel = new ResponseModel<string>
                 {
                     StatusCode = 200,
                     Sucess = true,
                     Message = "Hello Greeting from Put Method",
-                    Data = $"Updated Key: {requestModel.Id}, Updated Value: {requestModel.Message}"
+                    Data = $"Updated Value: {requestGreetingModel.Message}"
                 };
 
                 logger.Info("PUT request processed successfully.");
@@ -135,14 +147,14 @@ namespace HelloGreetingApplication.Controllers
         }
 
         [HttpPatch]
-        public IActionResult Patch(RequestModel requestModel)
+        public IActionResult Patch(RequestGreetingModel requestGreetingModel)
         {
             try
             {
-                logger.Info($"PATCH request received: Key={requestModel.Id}, Value={requestModel.Message}");
+                logger.Info($"PATCH request received:Value={requestGreetingModel.Message}");
 
                 // Check if the request model is null
-                if (requestModel == null)
+                if (requestGreetingModel == null)
                 {
                     logger.Warn("PATCH request received with invalid data.");
                     return BadRequest("Invalid data.");
@@ -153,7 +165,7 @@ namespace HelloGreetingApplication.Controllers
                     StatusCode = 200,
                     Sucess = true,
                     Message = "Hello Greeting from Patch Method",
-                    Data = $"Patched Key: {requestModel.Id}, Patched Value: {requestModel.Message}"
+                    Data = $"Patched Value: {requestGreetingModel.Message}"
                 };
 
                 logger.Info("PATCH request processed successfully.");

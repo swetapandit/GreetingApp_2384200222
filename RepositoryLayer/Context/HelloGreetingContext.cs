@@ -9,6 +9,8 @@ namespace ModelLayer.Model
         public HelloGreetingContext(DbContextOptions<HelloGreetingContext> options)
             : base(options) { }
 
-        public DbSet<Greeting> Greetings { get; set; }
+        public DbSet<GreetingEntity> Greetings { get; set; }
     }
+
 }
+

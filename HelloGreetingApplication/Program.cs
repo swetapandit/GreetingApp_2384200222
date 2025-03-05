@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using ModelLayer.Model;
 using NLog;
 using NLog.Web;
+using RepositoryLayer.Interface;
+using RepositoryLayer.Service;
 
 //var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 //logger.Info("Application is starting...");
@@ -22,21 +24,11 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
     builder.Services.AddScoped<IGreetingBL, GreetingBL>();
+    builder.Services.AddScoped<IGreetingRL, GreetingRL>();
 
-    // Ensure the connection string is available
+    builder.Services.AddDbContext<HelloGreetingContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("HelloAppContext")));
 
-    // Configure SQLite Database Connection
-
-    // Register DbContext with DI container
-    //var connectionString = builder.Configuration.GetConnectionString("HelloGreetingStore");
-    //if (string.IsNullOrEmpty(connectionString))
-    //{
-    //    throw new InvalidOperationException("Database connection string is missing.");
-    //}
-    //builder.Services.AddDbContext<HelloGreetingContext>(options =>
-    //    options.UseSqlite(connectionString));
-
-    builder.Services.AddDbContext<HelloGreetingContext>();
 
 
     var app = builder.Build();

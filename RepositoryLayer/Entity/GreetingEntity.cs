@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace RepositoryLayer.Entity
 {
 
-	public class Greeting
+	public class GreetingEntity
 	{
 		[Key]
 		public int Id { get; set; }

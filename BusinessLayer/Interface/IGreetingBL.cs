@@ -7,7 +7,7 @@ namespace BusinessLayer.Interface
 	{
 		string GetMsg();
 		string GetGreetingMessage(UserNameRequestModel request);
-
+		PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel);
     }
 }
 
