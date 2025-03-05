@@ -202,10 +202,43 @@ namespace HelloGreetingApplication.Controllers
 
                 logger.Info("PATCH request processed successfully.");
                 return Ok(responseModel);
+
+
             }
             catch (Exception ex)
             {
                 logger.Error(ex, "Error occurred while processing PATCH request.");
+                return StatusCode(500, "Internal server error");
+            }
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult Patch(int id,RequestGreetingModel requestGreetingModel)
+        {
+            try
+            {
+                logger.Info($"PATCH request received: Update Greeting ID={id} with new message={requestGreetingModel.Message}");
+
+                var updatedGreeting = greetingBL.UpdateGreeting(id, requestGreetingModel.Message);
+
+                if (updatedGreeting == null)
+                {
+                    response.Sucess = false;
+                    response.Message = "Greeting not found!";
+                    response.Data = null;
+                    logger.Info("Greeting update failed: ID not found.");
+                    return NotFound(response);
+                }
+
+                response.Sucess = true;
+                response.Message = "Greeting updated successfully!";
+                response.Data = updatedGreeting.Message;
+                logger.Info("Greeting updated successfully.");
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, "Error occurred while updating the greeting.");
                 return StatusCode(500, "Internal server error");
             }
         }

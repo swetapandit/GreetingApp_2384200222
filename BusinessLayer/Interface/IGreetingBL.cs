@@ -11,5 +11,6 @@ namespace BusinessLayer.Interface
         GreetingEntity GetGreetingById(int id);
         List<GreetingEntity> GetAllGreetings();
         PostGreetingResponse registerBL(RequestGreetingModel requestGreetingModel);
+        GreetingEntity UpdateGreeting(int id, string newMessage);
     }
 }

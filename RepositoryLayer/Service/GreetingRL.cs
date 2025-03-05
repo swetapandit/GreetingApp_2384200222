@@ -16,7 +16,7 @@ namespace RepositoryLayer.Service
             dbContext = _dbContext;
 		}
 
-		//Registration
+		//Post data
 		public GreetingEntity PostGreeting(RequestGreetingModel requestGreetingModel)
 		{
             var existingGreeting = dbContext.Greetings.FirstOrDefault(g => g.Message == requestGreetingModel.Message);
@@ -30,7 +30,7 @@ namespace RepositoryLayer.Service
             return newGreeting;
         }
 
-
+        // Get all Details
         public List<GreetingEntity> GettAllGreetings()
         {
             return dbContext.Greetings.ToList();
@@ -40,6 +40,21 @@ namespace RepositoryLayer.Service
         {
             return dbContext.Greetings.FirstOrDefault(g => g.Id == id);
         }
+
+
+        //Patch 
+        public GreetingEntity UpdateGreeting(int id, string newMessage)
+        {
+            var existingGreeting = dbContext.Greetings.FirstOrDefault(g => g.Id == id);
+            if (existingGreeting != null)
+            {
+                existingGreeting.Message = newMessage;
+                dbContext.Greetings.Update(existingGreeting);  // Mark entity as modified
+                dbContext.SaveChanges();
+            }
+            return existingGreeting;
+        }
+       
     }
 }
 

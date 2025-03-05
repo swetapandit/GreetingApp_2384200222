@@ -62,6 +62,11 @@ namespace BusinessLayer.Service
             return "Hello World!";
         }
 
+        //patch Update data using id
+        public GreetingEntity UpdateGreeting(int id, string newMessage)
+        {
+            return greetingRL.UpdateGreeting(id, newMessage);
+        }
     }
 }
 
